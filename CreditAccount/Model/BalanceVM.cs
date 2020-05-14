@@ -1,6 +1,5 @@
 ﻿using CurrencyCodesResolver;
-using System;
-using System.Collections.Generic;
+using CreditAccountDAL;
 
 namespace CreditAccount
 {
@@ -8,10 +7,10 @@ namespace CreditAccount
     {
         public decimal Balance { get; set; }
         public string CurrencyCode { get; set; }
-        public BalanceVM(KeyValuePair<int, decimal> keyValuePair, ICurrencyCodesResolver currencyCodesResolver)
+        public BalanceVM(Balance balance, ICurrencyCodesResolver currencyCodesResolver)
         {
-            CurrencyCode = currencyCodesResolver.Resolve(keyValuePair.Key);
-            Balance = keyValuePair.Value;
+            CurrencyCode = currencyCodesResolver.Resolve(balance.CurrencyCode);
+            Balance = balance.Money;
         }
         public BalanceVM()
         {

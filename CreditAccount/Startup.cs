@@ -4,7 +4,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
 using CreditAccountDAL;
 using CurrencyCodesResolver;
 using CreditAccountBLL;
@@ -25,16 +24,14 @@ namespace CreditAccount
         {
             services.AddControllers();
             string connectionString =  Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<AccountContext>(options =>
-                options.UseSqlServer(connectionString));
-            services.AddScoped<IDbManager, EFDbManager>();
+            services.AddScoped<IDbManager, DbManager>(x => new DbManager(connectionString));
             CurrencyCodesResolver<ECurrencyCodeISO4127> currencyCodesResolver = new CurrencyCodesResolver<ECurrencyCodeISO4127>();
             services.AddSingleton<ICurrencyCodesResolver>(currencyCodesResolver);
             CurrencyConverterConfiguration currencyConverterConfiguration = new CurrencyConverterConfiguration();
             services.AddTransient<CurrencyConverterConfiguration>(x => currencyConverterConfiguration);
             Configuration.GetSection("CurrencyConverterConfiguration").Bind(currencyConverterConfiguration);
             services.AddSingleton<ICurrencyConverterService, CurrencyConverterService>();
-            services.AddScoped<IAccountService, EFAccountService>();
+            services.AddScoped<IAccountService, AccountService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -7,9 +7,8 @@ namespace CreditAccountDAL
 {
     public interface IDbManager : IDisposable
     {
-        AccountContext AccountContext { get; }
-        IRepository<User> Users { get; }
-        IRepository<Account> Accounts { get; }
-        Task<int> SaveChanges();
+        IAccountRepository AccountRepository  { get; }
+        IDisposable OpenConnection();
+        void CloseConnection();
     }
 }

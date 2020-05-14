@@ -6,9 +6,9 @@ D:\repos\CreditAccount\CreditAccountBLL\bin\Debug\netcoreapp3.1\CurrencyCodesRes
 D:\repos\CreditAccount\CreditAccountBLL\bin\Debug\netcoreapp3.1\CreditAccountDAL.pdb
 D:\repos\CreditAccount\CreditAccountBLL\bin\Debug\netcoreapp3.1\CurrencyCodesResolver.pdb
 D:\repos\CreditAccount\CreditAccountBLL\obj\Debug\netcoreapp3.1\CreditAccountBLL.csprojAssemblyReference.cache
-D:\repos\CreditAccount\CreditAccountBLL\obj\Debug\netcoreapp3.1\CreditAccountBLL.csproj.CoreCompileInputs.cache
 D:\repos\CreditAccount\CreditAccountBLL\obj\Debug\netcoreapp3.1\CreditAccountBLL.AssemblyInfoInputs.cache
 D:\repos\CreditAccount\CreditAccountBLL\obj\Debug\netcoreapp3.1\CreditAccountBLL.AssemblyInfo.cs
 D:\repos\CreditAccount\CreditAccountBLL\obj\Debug\netcoreapp3.1\CreditAccountBLL.csproj.CopyComplete
 D:\repos\CreditAccount\CreditAccountBLL\obj\Debug\netcoreapp3.1\CreditAccountBLL.dll
 D:\repos\CreditAccount\CreditAccountBLL\obj\Debug\netcoreapp3.1\CreditAccountBLL.pdb
+D:\repos\CreditAccount\CreditAccountBLL\obj\Debug\netcoreapp3.1\CreditAccountBLL.csproj.CoreCompileInputs.cache

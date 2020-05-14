@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using CurrencyCodesResolver;
 using Microsoft.Extensions.Logging;
+using CreditAccountDAL;
 
 namespace CreditAccountBLL
 {

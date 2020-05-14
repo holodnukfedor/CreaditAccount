@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CreditAccountBLL;
 using CurrencyCodesResolver;
+using CreditAccountDAL;
 
 namespace CreditAccount.Controllers
 {
@@ -14,7 +14,7 @@ namespace CreditAccount.Controllers
         private IAccountService _accountService;
         private ICurrencyCodesResolver _currencyCodesResolver;
 
-        private ActionResult ProcessResult(Result<Dictionary<int, decimal>> result)
+        private ActionResult ProcessResult(Result<Balance[]> result)
         {
             if (result.IsSuccess)
                 return Ok(result.Data.Select(x => new BalanceVM(x, _currencyCodesResolver)));
@@ -22,10 +22,10 @@ namespace CreditAccount.Controllers
             return BadRequest(result.ErrorMessage);
         }
 
-        private ActionResult<Result<T>> ProcessResult<T>(Result<T> result)
+        private ActionResult ProcessResult(Result result)
         {
             if (result.IsSuccess)
-                return Ok(result.Data);
+                return Ok();
 
             return BadRequest(result.ErrorMessage);
         }
@@ -37,34 +37,34 @@ namespace CreditAccount.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<Result<Dictionary<int, decimal>>>> GetBalance(long userId)
+        public async Task<ActionResult> GetBalance(long userId)
         {
-            Result<Dictionary<int, decimal>> result = await _accountService.GetBalance(userId);
+            Result<Balance[]> result = await _accountService.GetBalanceAsync(userId);
             return ProcessResult(result);
         }
 
         [HttpPut]
-        public async Task<ActionResult<Result<decimal>>> PutMoney(ChangeBalanceVM changeBalance)
-        {
-            int currencyCodeInt = _currencyCodesResolver.Resolve(changeBalance.CurrencyCode);
-            Result<decimal> result = await _accountService.PutMoney(changeBalance.UserId, changeBalance.Amount, currencyCodeInt);
-            return ProcessResult(result);
-        }
-
-        [HttpPut]
-        public async Task<ActionResult<Result<decimal>>> WithDrawMoney(ChangeBalanceVM changeBalance)
+        public async Task<ActionResult> PutMoney(ChangeBalanceVM changeBalance)
         {
             int currencyCodeInt = _currencyCodesResolver.Resolve(changeBalance.CurrencyCode);
-            Result<decimal> result = await _accountService.WithdrawMoney(changeBalance.UserId, changeBalance.Amount, currencyCodeInt);
+            Result result = await _accountService.PutMoneyAsync(changeBalance.UserId, changeBalance.Amount, currencyCodeInt);
             return ProcessResult(result);
         }
 
         [HttpPut]
-        public async Task<ActionResult<Result<Dictionary<int, decimal>>>> ChangeCurrency(ChangeCurrencyVM changeCurrency)
+        public async Task<ActionResult> WithDrawMoney(ChangeBalanceVM changeBalance)
+        {
+            int currencyCodeInt = _currencyCodesResolver.Resolve(changeBalance.CurrencyCode);
+            Result result = await _accountService.WithdrawMoneyAsync(changeBalance.UserId, changeBalance.Amount, currencyCodeInt);
+            return ProcessResult(result);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> ChangeCurrency(ChangeCurrencyVM changeCurrency)
         {
             int fromCurrencyCodeInt = _currencyCodesResolver.Resolve(changeCurrency.FromCurrencyCode);
             int toCurrencyCodeInt = _currencyCodesResolver.Resolve(changeCurrency.ToCurrencyCode);
-            Result<Dictionary<int, decimal>> result = await _accountService.ChangeCurrency(changeCurrency.UserId, changeCurrency.Amount, fromCurrencyCodeInt, toCurrencyCodeInt);
+            Result result = await _accountService.ChangeCurrencyAsync(changeCurrency.UserId, changeCurrency.Amount, fromCurrencyCodeInt, toCurrencyCodeInt);
             return ProcessResult(result);
         }
     }
