@@ -1,0 +1,9 @@
+D:\repos\CreditAccount\CurrencyHelper\bin\Debug\netcoreapp3.1\CurrencyCodesResolver.deps.json
+D:\repos\CreditAccount\CurrencyHelper\bin\Debug\netcoreapp3.1\CurrencyCodesResolver.dll
+D:\repos\CreditAccount\CurrencyHelper\bin\Debug\netcoreapp3.1\CurrencyCodesResolver.pdb
+D:\repos\CreditAccount\CurrencyHelper\obj\Debug\netcoreapp3.1\CurrencyCodesResolver.csprojAssemblyReference.cache
+D:\repos\CreditAccount\CurrencyHelper\obj\Debug\netcoreapp3.1\CurrencyCodesResolver.csproj.CoreCompileInputs.cache
+D:\repos\CreditAccount\CurrencyHelper\obj\Debug\netcoreapp3.1\CurrencyCodesResolver.AssemblyInfoInputs.cache
+D:\repos\CreditAccount\CurrencyHelper\obj\Debug\netcoreapp3.1\CurrencyCodesResolver.AssemblyInfo.cs
+D:\repos\CreditAccount\CurrencyHelper\obj\Debug\netcoreapp3.1\CurrencyCodesResolver.dll
+D:\repos\CreditAccount\CurrencyHelper\obj\Debug\netcoreapp3.1\CurrencyCodesResolver.pdb
