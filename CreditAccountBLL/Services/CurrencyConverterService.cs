@@ -41,6 +41,7 @@ namespace CreditAccountBLL
             _currencyCodesResolver = currencyCodesResolver;
             _readerWriterLockSlim = new ReaderWriterLockSlim();
             _isWorking = true;
+            RebuildCache().Wait();
             _rebuildCacheThread = new Thread(RebuildCacheHandler);
             _rebuildCacheThread.Start();
             _logger = logger;
@@ -56,27 +57,27 @@ namespace CreditAccountBLL
         {
             do
             {
-                await RebuildCache();
-
                 _readerWriterLockSlim.EnterReadLock();
-                bool isCurrencyRatesDataAvailable = false;
+                bool isCurrencyRatesDataUnavailable = false;
                 try
                 {
-                    isCurrencyRatesDataAvailable = IsCurrencyRatesDataAvailable();
+                    isCurrencyRatesDataUnavailable = IsCurrencyRatesDataUnavailable();
                 }
                 finally
                 {
                     _readerWriterLockSlim.ExitReadLock();
                 }
 
-                if (isCurrencyRatesDataAvailable)
-                    Thread.Sleep(_halfOfTheExpirationTimeout);
-                else
+                if (isCurrencyRatesDataUnavailable)
                     Thread.Sleep(_updateCacheIntervalOnError);
+                else
+                    Thread.Sleep(_halfOfTheExpirationTimeout);
+
+                await RebuildCache();
             } while (_isWorking);
         }
 
-        private bool IsCurrencyRatesDataAvailable()
+        private bool IsCurrencyRatesDataUnavailable()
         {
             return _rateDictionary == null || DateTime.Now - _rateDictRebuildedTime > _expirationTimeout;
         }
@@ -134,13 +135,16 @@ namespace CreditAccountBLL
 
             try
             {
-                if (IsCurrencyRatesDataAvailable())
+                if (IsCurrencyRatesDataUnavailable())
                     return Result<decimal>.CreateError($"Information about currency rate is unavailable now. Try to use our service later");
 
                 if (_comparableCurrencyCode != fromCurrency)
                     amount /= _rateDictionary[fromCurrency];
 
-                return Result<decimal>.CreateSuccess(amount * _rateDictionary[toCurrency]);
+                if (_comparableCurrencyCode != toCurrency)
+                    amount *= _rateDictionary[toCurrency];
+
+                return Result<decimal>.CreateSuccess(amount);
             }
             finally 
             {

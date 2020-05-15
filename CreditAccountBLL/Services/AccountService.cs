@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using CurrencyCodesResolver;
 using System.Threading.Tasks;
 using CreditAccountDAL;
-using System.Linq;
 
 namespace CreditAccountBLL
 {
@@ -20,27 +18,27 @@ namespace CreditAccountBLL
             _currencyConverterService = currencyConverterService;
         }
 
-        private void ThrowIfNegativeOrZeroAmountOfMoney(decimal amount)
-        {
-            if (amount <= 0)
-                throw new Exception("Money amount must be greater than zero");
-        }
-
-        private void ThrowIfCurrencyNoExist(int currencyCode)
-        {
-            if (!_currencyCodesResolver.IsExists(currencyCode))
-                throw new Exception($"Currency code doesn't exist. Currency code: [{currencyCode}]");
-        }
-
         async public Task<Result> ChangeCurrencyAsync(long userId, decimal amount, int from, int to)
         {
-            ThrowIfNegativeOrZeroAmountOfMoney(amount);
-            ThrowIfCurrencyNoExist(from);
-            ThrowIfCurrencyNoExist(to);
+           
+            if (amount <= 0)
+                return AccountRepositoryErrorResultCreator.MoneyLessOrEqualZero(amount);
+
+            if (!_currencyCodesResolver.IsExists(to))
+                return AccountRepositoryErrorResultCreator.CurrencyNotExists(to);
+
+            if (!_currencyCodesResolver.IsExists(from))
+                return AccountRepositoryErrorResultCreator.CurrencyNotExists(from);
+
+            if (from == to)
+                return AccountRepositoryErrorResultCreator.CurrenciesAreSame(from);
 
             Result<decimal> convertionResult = _currencyConverterService.Convert(amount, from, to);
             if (!convertionResult.IsSuccess)
                 return Result<Dictionary<int, decimal>>.CreateError(convertionResult.ErrorMessage);
+
+            if (convertionResult.Data <= 0)
+                return AccountRepositoryErrorResultCreator.CreateConvertationError(convertionResult.Data);
 
             using (_dbManager.OpenConnection())
             {
@@ -58,8 +56,12 @@ namespace CreditAccountBLL
 
         async public Task<Result> PutMoneyAsync(long userId, decimal amount, int currencyCode)
         {
-            ThrowIfNegativeOrZeroAmountOfMoney(amount);
-            ThrowIfCurrencyNoExist(currencyCode);
+            if (amount <= 0)
+                return AccountRepositoryErrorResultCreator.MoneyLessOrEqualZero(amount);
+
+            if (!_currencyCodesResolver.IsExists(currencyCode))
+                return AccountRepositoryErrorResultCreator.CurrencyNotExists(currencyCode);
+
             using (_dbManager.OpenConnection())
             {
                 return await _dbManager.AccountRepository.PutMoneyAsync(userId, currencyCode, amount);
@@ -68,8 +70,11 @@ namespace CreditAccountBLL
 
         async public Task<Result> WithdrawMoneyAsync(long userId, decimal amount, int currencyCode)
         {
-            ThrowIfNegativeOrZeroAmountOfMoney(amount);
-            ThrowIfCurrencyNoExist(currencyCode);
+            if (amount <= 0)
+                return AccountRepositoryErrorResultCreator.MoneyLessOrEqualZero(amount);
+
+            if (!_currencyCodesResolver.IsExists(currencyCode))
+                return AccountRepositoryErrorResultCreator.CurrencyNotExists(currencyCode);
 
             using (_dbManager.OpenConnection())
             {

@@ -1,3 +1,5 @@
+D:\repos\CreditAccount\CreditAccount\bin\Debug\netcoreapp3.1\Sql\Procedures.sql
+D:\repos\CreditAccount\CreditAccount\bin\Debug\netcoreapp3.1\Sql\Schema.sql
 D:\repos\CreditAccount\CreditAccount\bin\Debug\netcoreapp3.1\appsettings.Development.json
 D:\repos\CreditAccount\CreditAccount\bin\Debug\netcoreapp3.1\appsettings.json
 D:\repos\CreditAccount\CreditAccount\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
@@ -36,6 +38,7 @@ D:\repos\CreditAccount\CreditAccount\bin\Debug\netcoreapp3.1\System.Composition.
 D:\repos\CreditAccount\CreditAccount\bin\Debug\netcoreapp3.1\System.Composition.Hosting.dll
 D:\repos\CreditAccount\CreditAccount\bin\Debug\netcoreapp3.1\System.Composition.Runtime.dll
 D:\repos\CreditAccount\CreditAccount\bin\Debug\netcoreapp3.1\System.Composition.TypedParts.dll
+D:\repos\CreditAccount\CreditAccount\bin\Debug\netcoreapp3.1\System.Data.SqlClient.dll
 D:\repos\CreditAccount\CreditAccount\bin\Debug\netcoreapp3.1\cs\Microsoft.CodeAnalysis.resources.dll
 D:\repos\CreditAccount\CreditAccount\bin\Debug\netcoreapp3.1\de\Microsoft.CodeAnalysis.resources.dll
 D:\repos\CreditAccount\CreditAccount\bin\Debug\netcoreapp3.1\es\Microsoft.CodeAnalysis.resources.dll
@@ -91,6 +94,8 @@ D:\repos\CreditAccount\CreditAccount\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.C
 D:\repos\CreditAccount\CreditAccount\bin\Debug\netcoreapp3.1\runtimes\win-arm64\native\sni.dll
 D:\repos\CreditAccount\CreditAccount\bin\Debug\netcoreapp3.1\runtimes\win-x64\native\sni.dll
 D:\repos\CreditAccount\CreditAccount\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\sni.dll
+D:\repos\CreditAccount\CreditAccount\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+D:\repos\CreditAccount\CreditAccount\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
 D:\repos\CreditAccount\CreditAccount\bin\Debug\netcoreapp3.1\CreditAccountBLL.dll
 D:\repos\CreditAccount\CreditAccount\bin\Debug\netcoreapp3.1\CreditAccountDAL.dll
 D:\repos\CreditAccount\CreditAccount\bin\Debug\netcoreapp3.1\CurrencyCodesResolver.dll
@@ -109,6 +114,3 @@ D:\repos\CreditAccount\CreditAccount\obj\Debug\netcoreapp3.1\staticwebassets\Cre
 D:\repos\CreditAccount\CreditAccount\obj\Debug\netcoreapp3.1\CreditAccount.dll
 D:\repos\CreditAccount\CreditAccount\obj\Debug\netcoreapp3.1\CreditAccount.pdb
 D:\repos\CreditAccount\CreditAccount\obj\Debug\netcoreapp3.1\CreditAccount.genruntimeconfig.cache
-D:\repos\CreditAccount\CreditAccount\bin\Debug\netcoreapp3.1\System.Data.SqlClient.dll
-D:\repos\CreditAccount\CreditAccount\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
-D:\repos\CreditAccount\CreditAccount\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll

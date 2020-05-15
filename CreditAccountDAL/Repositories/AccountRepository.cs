@@ -14,31 +14,6 @@ namespace CreditAccountDAL
             _connection = connection;
         }
 
-        private Result CreateUserNotExistsResult(long userId)
-        {
-            return Result.CreateError($"User doesn't exist. User id: {userId}");
-        }
-
-        private Result CreatMoneyLessOrEqualZeroResult(decimal money)
-        {
-            return Result.CreateError($"Amount of money less or equal zero. Money: {money}");
-        }
-
-        private Result CreateConvertationError(decimal money)
-        {
-            return Result.CreateError($"Amount of money got by convertation less or equal zero. Money: {money}");
-        }
-
-        private Result CreateNotEnoughMoneyResult(int currencyCode)
-        {
-            return Result.CreateError($"There is not enough money on currency account. CurrencyCode: {currencyCode}");
-        }
-
-        private Result CreateNoCurrencyAccountResult(int currencyCode)
-        {
-            return Result.CreateError($"There is no currency account. CurrencyCode: {currencyCode}");
-        }
-
         private Result<T> CreateUserNotExistsResult<T>(long userId)
         {
             return Result<T>.CreateError($"User doesn't exist. User id: {userId}");
@@ -99,15 +74,17 @@ namespace CreditAccountDAL
                 case EAccountOperationStatus.Success:
                     return Result.CreateSuccess();
                 case EAccountOperationStatus.UserNotExists:
-                    return CreateUserNotExistsResult(userId);
+                    return AccountRepositoryErrorResultCreator.UserNotExists(userId);
                 case EAccountOperationStatus.MoneyLessOrEqualZero:
-                    return CreatMoneyLessOrEqualZeroResult(money);
+                    return AccountRepositoryErrorResultCreator.MoneyLessOrEqualZero(money);
                 case EAccountOperationStatus.NoCurrencyAccount:
-                    return CreateNoCurrencyAccountResult(currencyCode);
+                    return AccountRepositoryErrorResultCreator.NoCurrencyAccount(currencyCode);
                 case EAccountOperationStatus.NotEnoughMoney:
-                    return CreateNotEnoughMoneyResult(currencyCode);
+                    return AccountRepositoryErrorResultCreator.NotEnoughMoney(currencyCode);
                 case EAccountOperationStatus.MoneyLessOrEqualZeroToDestinationAccount:
-                    return CreateConvertationError(convertedMoney);
+                    return AccountRepositoryErrorResultCreator.CreateConvertationError(convertedMoney);
+                case EAccountOperationStatus.CurrenciesAreSame:
+                    return AccountRepositoryErrorResultCreator.CurrenciesAreSame(currencyCode);
                 default:
                     throw new NotImplementedException($"Unknown status. AccountOperationStatus [{status}]");
             }

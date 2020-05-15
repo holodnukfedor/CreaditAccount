@@ -11,6 +11,7 @@ namespace CreditAccountDAL
         MoneyLessOrEqualZero = 2,
         NoCurrencyAccount = 3,
         NotEnoughMoney = 4,
-        MoneyLessOrEqualZeroToDestinationAccount = 5
+        MoneyLessOrEqualZeroToDestinationAccount = 5,
+        CurrenciesAreSame = 6
     }
 }

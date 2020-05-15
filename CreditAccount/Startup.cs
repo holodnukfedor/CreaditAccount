@@ -32,6 +32,7 @@ namespace CreditAccount
             Configuration.GetSection("CurrencyConverterConfiguration").Bind(currencyConverterConfiguration);
             services.AddSingleton<ICurrencyConverterService, CurrencyConverterService>();
             services.AddScoped<IAccountService, AccountService>();
+            services.AddTransient<DatabaseDeployer>(x => new DatabaseDeployer(connectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
