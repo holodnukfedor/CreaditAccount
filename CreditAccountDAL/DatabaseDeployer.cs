@@ -2,30 +2,43 @@
 using System.IO;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
+using System.Text;
 
 namespace CreditAccountDAL
 {
     public class DatabaseDeployer : IDisposable
     {
-        private string _pathToSchema = "..\\CreditAccountDAL\\Sql\\Procedures.sql";
-        private string _pathToProcedures = "..\\CreditAccountDAL\\Sql\\Schema.sql";
+        private const string _batchSeparator = "GO";
+        private string _pathToSchema = "..\\CreditAccountDAL\\Sql\\Schema.sql";
+        private string _pathToProcedures = "..\\CreditAccountDAL\\Sql\\Procedures.sql";
         private SqlConnection _connection;
 
         private static async Task ExecuteNonQueryAsync(SqlConnection connection, string sql)
         {
-            SqlCommand command = connection.CreateCommand();
-            command.CommandText = sql;
-            command.CommandType = System.Data.CommandType.Text;
+            SqlCommand command = connection.CreateTextCommand(sql);
             await command.ExecuteNonQueryAsync();
         }
 
         public static async Task ExecuteSqlFileAsync(SqlConnection connection, string path)
         {
-            string text = await File.ReadAllTextAsync(path);
-            string[] batches = text.Split("GO");
-            foreach (var batch in batches)
+            using (StreamReader reader = new StreamReader(path))
             {
-                await ExecuteNonQueryAsync(connection, batch);
+                StringBuilder batchBuilder = new StringBuilder();
+                while (!reader.EndOfStream)
+                {
+                    string line = await reader.ReadLineAsync();
+                    if (String.Equals(line.Trim(), _batchSeparator, StringComparison.OrdinalIgnoreCase))
+                    {
+                        string batch = batchBuilder.ToString();
+                        await ExecuteNonQueryAsync(connection, batch);
+                        batchBuilder.Clear();
+                    }
+                    else
+                    {
+                        batchBuilder.Append(line).Append(Environment.NewLine);
+                    }
+                }
+
             }
         }
 
@@ -47,9 +60,7 @@ namespace CreditAccountDAL
             try
             {
                 _connection.Open();
-                SqlCommand command = _connection.CreateCommand();
-                command.CommandText = sql;
-                command.CommandType = System.Data.CommandType.Text;
+                SqlCommand command = _connection.CreateTextCommand(sql);
                 SqlDataReader reader = command.ExecuteReader();
                 return read(reader);
             }
@@ -77,10 +88,31 @@ namespace CreditAccountDAL
             _connection = new SqlConnection(connectionString);
         }
 
+        public async Task CreateDbIfNotExistsAsync()
+        {
+            SqlConnectionStringBuilder connectionStringBuilder = new SqlConnectionStringBuilder(_connection.ConnectionString);
+            string dbName = connectionStringBuilder.InitialCatalog;
+            connectionStringBuilder.InitialCatalog = String.Empty;
+            string connectionStrWithoutDb = connectionStringBuilder.ConnectionString;
+            SqlConnection connWithoutDb = new SqlConnection(connectionStrWithoutDb);
+
+            try
+            {
+                connWithoutDb.Open();
+                SqlCommand createDbCommand = connWithoutDb.CreateTextCommand($"IF (DB_ID('{dbName}') IS NULL) CREATE DATABASE {dbName}");
+                await createDbCommand.ExecuteNonQueryAsync();
+            }
+            finally
+            {
+                connWithoutDb.Close();
+            }
+        }
+
         async public Task DeployAsync()
         {
             try
             {
+                await CreateDbIfNotExistsAsync();
                 _connection.Open();
                 await ExecuteSqlFileAsync(_connection, _pathToSchema);
                 await ExecuteSqlFileAsync(_connection, _pathToProcedures);

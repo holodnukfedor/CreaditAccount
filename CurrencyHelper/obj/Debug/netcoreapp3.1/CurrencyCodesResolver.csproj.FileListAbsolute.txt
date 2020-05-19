@@ -6,3 +6,4 @@ D:\repos\CreditAccount\CurrencyHelper\obj\Debug\netcoreapp3.1\CurrencyCodesResol
 D:\repos\CreditAccount\CurrencyHelper\obj\Debug\netcoreapp3.1\CurrencyCodesResolver.AssemblyInfo.cs
 D:\repos\CreditAccount\CurrencyHelper\obj\Debug\netcoreapp3.1\CurrencyCodesResolver.dll
 D:\repos\CreditAccount\CurrencyHelper\obj\Debug\netcoreapp3.1\CurrencyCodesResolver.pdb
+D:\repos\CreditAccount\CurrencyHelper\obj\Debug\netcoreapp3.1\CurrencyCodesResolver.csprojAssemblyReference.cache
