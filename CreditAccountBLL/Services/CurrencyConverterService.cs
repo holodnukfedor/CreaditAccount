@@ -24,7 +24,6 @@ namespace CreditAccountBLL
         private ICurrencyCodesResolver _currencyCodesResolver;
         private ReaderWriterLockSlim _readerWriterLockSlim;
         private Thread _rebuildCacheThread;
-        private bool _disposed;
         private bool _isWorking;
         ILogger<CurrencyConverterService> _logger;
 
@@ -43,14 +42,9 @@ namespace CreditAccountBLL
             _isWorking = true;
             RebuildCache().Wait();
             _rebuildCacheThread = new Thread(RebuildCacheHandler);
+            _rebuildCacheThread.IsBackground = true;
             _rebuildCacheThread.Start();
             _logger = logger;
-        }
-
-        ~CurrencyConverterService()
-        {
-            if (!_disposed && _readerWriterLockSlim != null)
-                _readerWriterLockSlim.Dispose();
         }
 
         private async void RebuildCacheHandler()
@@ -155,9 +149,7 @@ namespace CreditAccountBLL
         public void Dispose()
         {
             _isWorking = false;
-            _rebuildCacheThread.Join();
             _readerWriterLockSlim.Dispose();
-            _disposed = true; ;
         }
     }
 }

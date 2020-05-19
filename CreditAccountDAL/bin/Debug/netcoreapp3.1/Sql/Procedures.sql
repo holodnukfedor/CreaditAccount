@@ -137,7 +137,7 @@ BEGIN
 			RETURN;
 		END
 
-		EXEC dbo.WithdrawMoney @userId, @fromCurrencyCode, @fromCurrencyMoney, @resultStatus OUT;
+		EXEC dbo.WithdrawMoneyWithoutTran @userId, @fromCurrencyCode, @fromCurrencyMoney, @resultStatus OUT;
 		IF @resultStatus != 0
 		BEGIN
 			ROLLBACK TRANSACTION;
